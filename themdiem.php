@@ -122,9 +122,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			$tennhanvien =  $_SESSION["nhanvien"];
 			}
 			$nnhap = date('Y-m-d');
+			$sqltondau = "select Tondau from tonkho where Ngayton='$nnhap' ";
+			$result_tondau = $conn->query($sqltondau);
+			$kt_tondau=false;
+			if($result_tondau->num_rows<1)			
+			{
+				$sqlthemtondau="insert into tonkho (Ngayton,Tondau,Nhanvien) value('$nnhap','160000','$tennhanvien_td')";
+				$conn->query($sqlthemtondau);	
+			}			
+			else {
+				while ($row = $result_tondau->fetch_assoc()) {
+				$sltam = $row["Tondau"];				
+				}
+				$tam = $sltam+160000;		
+				$sqlthemtondau="update tonkho set tonkho.Tondau= '$tam' where Ngayton='$nnhap'";
+				$conn->query($sqlthemtondau);	
+			}	
 			$sqlnhapbaocao = "insert into nhap (Ngaynhap,Soluong,Startseri,Endseri,Nhanvien) value('$nnhap','160000',
-								'$allseri_bd','$allseri_kt','$tennhanvien');";
-			
+								'$allseri_bd','$allseri_kt','$tennhanvien');";			
 			if ($conn->query($sqlnhapbaocao) === TRUE) {
 				$last_id = $conn->insert_id;
 					for ($i=0; $i < 40; $i++) { 
@@ -139,13 +154,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			} else {
 			   echo "Error: " . $sql . "<br>" . $conn->error;
 			}
+		}
 				$conn->close();
 			}
 			else
 			{
 				echo " <h1 style='color:Red;'>Chưa nhập dữ liệu </h1>";
 			}
-	}
+	
 	if(isset($_POST["xemdiemnhap"]))
 		{
 			$sql1 = "SELECT * FROM nhap";

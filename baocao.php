@@ -96,13 +96,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 					$tonkho_dau = $row_ton["Tondau"];	
 					if($tonkho_dau>0)
 					{
-					$myngayton= $row_ton["Ngayton"] ;
-					
+					$myngayton= $row_ton["Ngayton"] ;					
 					$sql_tc = "select Ngaynhap from baocao where Ngaynhap='$myngayton'";
 					$result_tc = $conn->query($sql_tc);	
 					$counttoncauoi = $result_tc->num_rows*4000;	
 					$tonkho_cuoi = $tonkho_dau-$counttoncauoi;
-
 					echo "<tr>";
 					echo "<th>" . $row_ton["Ngayton"]  . "</th>" ;
 					echo "<th>" .   $tonkho_dau   . "</th>" ;
@@ -112,14 +110,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				}
 			}
 			?>
-
-			</table></div>		
-			 <?php	
-		if($result->num_rows>0)
-		{
-			?>
-		
-				<div class="thongkenhap">
+			</table></div>
+			<div class="thongkenhap">
 			<h3  style='color:red; font-size: 24px;' >Số Serri ghi trên thùng.</h3>
 			<table style="width: 100%">	
 			<tr >  
@@ -127,8 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 					<th>Số lượng</th>
 					<th>Startseri</th>
 					<th>Endseri</th>			
-			</tr>
-				<?php
+			</tr>		
+			 <?php	
+		
 				if($result_nhap->num_rows>0)
 				{
 					while ($row_nhap=$result_nhap->fetch_assoc()) {				
@@ -140,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 					echo "</tr>";
 					}			
 				}	
-		}
+		
 ?>
 		</table>
 		</div>
@@ -158,6 +151,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				<th>Nhân viên</th>
 		</tr>
 		<?php
+		if($result->num_rows>0)
+		{
 		while($row=$result->fetch_assoc())
 		{		
 			$tennhanvien;
@@ -180,6 +175,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				echo "<th>" . $tennhanvien   . "</th>" ;	
 			echo "</tr>";
 		}
+	}
+			 echo "</table>"; 
 	}
 	if(!empty($_POST["Gui_BC"]))
 	{
@@ -248,8 +245,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				$rowcount_ton++;
 				}}
 			}
+			$sumxuat=0;
 			if($result1->num_rows>0)
 			{
+				$sumxuat=0;
 				while ($row=$result1->fetch_assoc()) {
 			$tennhanvien;		
 			$myid=$row["nhanvien"];
@@ -262,7 +261,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 					$sheet->setCellValue('C3','Trung tâm: '.$rownv["trungtam"]);
 				}
 			}
-					$rowcount++;					
+					$rowcount++;	
+					$sumxuat+=$row["Xuat"];				
 					$sheet->setCellValue('A'.$rowcount,$row["name"]);
 					$sheet->setCellValue('B'.$rowcount,$row["Ngaynhap"]);
 					$sheet->setCellValue('C'.$rowcount,$row["Ca"]);
@@ -272,22 +272,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 					$sheet->setCellValue('G'.$rowcount,$tennhanvien);
 
 				}	
+				$sheet->setCellValue('D'.($rowcount+1),'Tổng xuất:'.$sumxuat);
 			}
-
+			
 			$sql_laynhap = "select * from nhap where Ngaynhap  between '$homnay' and '$homnay1' ";
 			$result_nhap = $conn->query($sql_laynhap);
 			
 			$rowcount_nhap=5;
+			$sumsoluong=0;
 			if($result_nhap->num_rows>0)
 			{
-				
+				$sumsoluong=0;
 				while ($row_nhap=$result_nhap->fetch_assoc()) {								
 					$sheet->setCellValue('K'.$rowcount_nhap, $homnay);
+					$sumsoluong+=$row_nhap["Soluong"];
 					$sheet->setCellValue('L'.$rowcount_nhap, $row_nhap["Soluong"]);
 					$sheet->setCellValue('M'.$rowcount_nhap, $row_nhap["Startseri"]);
 					$sheet->setCellValue('N'.$rowcount_nhap, $row_nhap["Endseri"]);
 					$rowcount_nhap	++;	
-				}			
+				}		
+					$sheet->setCellValue('L'.$rowcount_nhap,'Tổng nhập:'. $sumsoluong);
 			}	
 
 			$styleArray = array(
@@ -299,6 +303,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			);
 
 			$sheet->getStyle('A4:G4')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+				->getStartColor()->setARGB('C0C0C0');
+				$sheet->getStyle('D'.($rowcount+1))->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+				->getStartColor()->setARGB('C0C0C0');
+				$sheet->getStyle('L'.$rowcount_nhap)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
 				->getStartColor()->setARGB('C0C0C0');
 				$sheet->getStyle('H4:J4')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
 				->getStartColor()->setARGB('4B0082');

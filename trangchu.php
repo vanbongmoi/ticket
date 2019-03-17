@@ -44,27 +44,9 @@ if(!empty($_SESSION['nhanvien']))
 $tennhanvien_td=$_SESSION['nhanvien'];
 }
 if($result_tondau->num_rows<1)
-{
-		
-			$Mytondau=$tondau_*4000;
-			$sqlthemtondau="insert into tonkho (Ngayton,Tondau,Nhanvien) value('$homnay','$Mytondau','$tennhanvien_td')";
-			$conn->query($sqlthemtondau);				
-}
-else {
-		while ($row = $result_tondau->fetch_assoc()) {
-		$sltam = $row["Tondau"];
-			if($sltam>0)
-			{
-				$kt_tondau=true;
-			}
-		}
-		if($kt_tondau!=true)
-		{
-
-			$Mytondau=$tondau_*4000;
+{$Mytondau=$tondau_*4000;
 			$sqlthemtondau="insert into tonkho (Ngayton,Tondau,Nhanvien) value('$homnay','$Mytondau','$tennhanvien_td')";
 			$conn->query($sqlthemtondau);	
-		}
 }
 ?>
 <form name ="gameform" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  	
@@ -78,7 +60,7 @@ if ($result->num_rows > 0) {
     	?>
    <div class="maygame">
   		<?php echo   "<div style='color: Green; font-size: 24px;' >". $row["name"]  . "</div>" ?>
-  		<input  style='width:250px;height: 130px; background-color: orange; font-size: 40px;' type='submit' name='btngame' value='<?php echo $row["thutu"] ?>' >  		
+  		<input  style='width:250px;height: 130px; background-color: orange; font-size: 70px;' type='submit' name='btngame' value='<?php echo $row["thutu"] ?>' >  		
 	</div>
   <?php  }} ?>
 </div>
