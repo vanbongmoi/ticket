@@ -38,15 +38,19 @@ $result1 = $conn->query($sql1);
 $tondau_ = $result1->num_rows;
 $sqltondau = "select Tondau from tonkho where Ngayton='$homnay' ";
 $result_tondau = $conn->query($sqltondau);
-$kt_tondau=false;
+
 if(!empty($_SESSION['nhanvien']))
 {
 $tennhanvien_td=$_SESSION['nhanvien'];
 }
 if($result_tondau->num_rows<1)
-{$Mytondau=$tondau_*4000;
+{
+	if($tondau_>0)
+	{
+			$Mytondau=$tondau_*4000;
 			$sqlthemtondau="insert into tonkho (Ngayton,Tondau,Nhanvien) value('$homnay','$Mytondau','$tennhanvien_td')";
 			$conn->query($sqlthemtondau);	
+}
 }
 ?>
 <form name ="gameform" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  	

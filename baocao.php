@@ -228,8 +228,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			$result1 = $conn->query($sql1);			
 			$sql_laytondau = "select * from tonkho where Ngayton  between '$homnay' and '$homnay1'";
 			$result_tonkho1 = $conn->query($sql_laytondau);				
+
+			
 			if($result_tonkho1->num_rows>0)
-			{
+			{				
 				while ($row_ton=$result_tonkho1->fetch_assoc()) {
 					$tonkho_dau = $row_ton["Tondau"];	
 					if($tonkho_dau>0)
@@ -238,12 +240,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 					$sql_tc = "select Ngaynhap from baocao where Ngaynhap='$myngayton'";
 					$result_tc = $conn->query($sql_tc);	
 					$counttoncauoi = $result_tc->num_rows*4000;	
-					$tonkho_cuoi = $tonkho_dau-$counttoncauoi;
+				$tonkho_cuoi =$tonkho_dau-$counttoncauoi;
 				$sheet->setCellValue('H'.($rowcount_ton),$row_ton["Ngayton"]);
 				$sheet->setCellValue('I'.($rowcount_ton),$tonkho_dau);
 				$sheet->setCellValue('J'.($rowcount_ton),$tonkho_cuoi);
 				$rowcount_ton++;
-				}}
+				}
+			}
 			}
 			$sumxuat=0;
 			if($result1->num_rows>0)
