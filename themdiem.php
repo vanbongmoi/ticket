@@ -1,4 +1,4 @@
-
+﻿
 <?php
 	$quyen;
 	$trungtam='ALB';
@@ -53,6 +53,7 @@ $Ca;
 						  <option value="G">G</option>
 						   <option value="H">H</option>
 						   <option value="I">I</option>
+						   <option value="J">J</option>
 						  <option value="K">K</option>
 						  <option value="L">L</option>
 						   <option value="M">M</option>
@@ -60,8 +61,14 @@ $Ca;
 						  <option value="O">O</option>
 						  <option value="P">P</option>
 						   <option value="Q">Q</option>
+						   <option value="R">R</option>
+						   <option value="S">S</option>
+					           <option value="T">T</option>
+						   <option value="U">U</option>
+						   <option value="V">V</option>
 						   <option value="W">W</option>
 						  <option value="X">X</option>
+						  <option value="Y">Y</option>
 						  <option value="Z">Z</option>
 						</select><br></br></br>
   Start Seri: </br><input style=' font-size: 60px; ' type="text" name="seri" placeholder="12345001"></br></br></br></br>

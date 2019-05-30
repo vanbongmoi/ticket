@@ -1,4 +1,3 @@
-
 <?php  
 	$quyen;
 	$trungtam='ALB';
@@ -17,10 +16,8 @@ if(isset($_SESSION['quyen']))
 	}
 }
 ?>
-
 <?php
 $tennhanvien=1;
-$homnay=date("Y-m-d");
 $mayNhap;
 $idmayNhap;
 $batdau;
@@ -35,7 +32,9 @@ $dbname = "ticket";
 $thongbao="";
 $Ca;
 $str;
-	
+date_default_timezone_set('Asia/Ho_Chi_Minh');	
+$homnay=date("Y-m-d");
+$tg_ht=date("H:i:s");
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -50,19 +49,15 @@ $countton=$result1->num_rows;
   <div style="float: right; font-size: 16px;">Còn lại: <?php echo $countton ;?>  cọc.   Số lượng:  <?php echo ($countton*4000) ;?>  tiNi điểm.</div>
 	<h2 style='color: Red;'>Chọn tiNi điểm.</h2>
    </div>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-	
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 	
 <div class="productName"> 
-
 	<?php
-	if ($result1->num_rows > 0) {
-    // output data of each row			
+	if ($result1->num_rows > 0) {		
     while($row = $result1->fetch_assoc()) {
-    	$str =str_split($row["Endseri"],7);  
-    		
+    	$str =str_split($row["Startseri"],7);      		
 		?>
 		<div class="maygame">
-				<?php  echo   "<div style='color: Green; height: 30px;font-size: 30px;' ></div>"; ?>
+	<?php  echo   "<div style='color: Green; height: 30px;font-size: 30px;' ></div>"; ?>
   <input  style='width:250px;height: 150px; background-color: Blue; color:white;font-size: 36px;' type='submit' name='DSseri'
   		 	 value='<?php echo $str[0]; ?>' >  		
 	</div>
@@ -73,7 +68,7 @@ $countton=$result1->num_rows;
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		if(!empty($_POST["DSseri"]))
 		{
-		$seriNhap=$_POST["DSseri"]."000";
+		$seriNhap=$_POST["DSseri"];
 		}	
 		if(!empty($_SESSION["nhanvien"]))
 	{
@@ -91,7 +86,6 @@ $countton=$result1->num_rows;
 	}
 	if(!empty($mayNhap) && !empty($seriNhap) && !empty($tennhanvien))
 	{		
-// Create connection
 	$layidmaygame = "select * from tenmay where thutu = '$mayNhap'";
 	$ketqua_tenmay=$conn->query($layidmaygame);	
 	if($ketqua_tenmay->num_rows >0)
@@ -99,11 +93,9 @@ $countton=$result1->num_rows;
 		while ($row_idmay=$ketqua_tenmay->fetch_assoc()) {
 				$idmayNhap = $row_idmay["id"];
 		}
-	}	
-	//////////////////////////
-	$layseri = "select * from myseri where Endseri ='$seriNhap'";
-	$ketqua=$conn->query($layseri);
-	
+	}		
+	$layseri = "select * from myseri where Startseri like'%$seriNhap%'";
+	$ketqua=$conn->query($layseri);	
 	if($ketqua->num_rows >0)
 	{
 		while ($row=$ketqua->fetch_assoc()) {
@@ -118,17 +110,16 @@ $countton=$result1->num_rows;
 				$Mytoncuoi = $result_toncuoi->num_rows;
 				$Mytoncuoi=($Mytoncuoi-1)*4000;
 			}
-	$sql = "insert into baocao (idmay,Ngaynhap,Ca,Xuat,Startseri,Endseri,Nhanvien) 
-	value('$idmayNhap','$homnay','$Ca','4000','$batdau','$ketthuc','$tennhanvien');";
-	
+	$sql = "insert into baocao (idmay,Ngaynhap,Ca,Xuat,Startseri,Endseri,Nhanvien,thoigian) 
+	value('$idmayNhap','$homnay','$Ca','4000','$batdau','$ketthuc','$tennhanvien','$tg_ht');";	
 	if($conn->query($sql)===TRUE)
 	{			
-	$sqlnv = "DELETE  FROM myseri where Endseri= '$seriNhap' ";
-	if ($conn->query($sqlnv) === TRUE) { 	
-	 header("location:trangchu.php");
-	} else {
-	    echo "Error deleting record: " . $conn->error;
-	}
+		$sqlnv = "DELETE  FROM myseri where Startseri like'%$seriNhap%' ";
+		if ($conn->query($sqlnv) === TRUE) { 	
+		 header("location:trangchu.php");
+		} else {
+		    echo "Error deleting record: " . $conn->error;
+		}
 	}
 	$conn->close();
 }

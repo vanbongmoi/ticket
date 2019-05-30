@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			mysqli_set_charset($conn,"utf8");
 			$homnay=$_POST["date_baocao"];
 			$homnay1=$_POST["date_baocao1"];
-			$sql = "SELECT `baocao`.`Ngaynhap`, `tenmay`.`name`, `baocao`.`nhanvien`, `baocao`.`Ca`, `baocao`.`Xuat`, `baocao`.`Startseri`, `baocao`.`Endseri` FROM `tenmay`  INNER JOIN `baocao` on `baocao`.`idmay` = `tenmay`.`id`
+			$sql = "SELECT `baocao`.`Ngaynhap`, `tenmay`.`name`, `baocao`.`nhanvien`, `baocao`.`Ca`, `baocao`.`Xuat`, `baocao`.`Startseri`, `baocao`.`Endseri`, `baocao`.`thoigian` FROM `tenmay`  INNER JOIN `baocao` on `baocao`.`idmay` = `tenmay`.`id`
 			   where Ngaynhap  between '$homnay' and '$homnay1'";
 			
 			$sql_laynhap = "select * from nhap where Ngaynhap  between '$homnay' and '$homnay1'";
@@ -138,12 +138,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		</table>
 		</div>
 	</div>
-		<div class="bangbaocao" style='width: 70%; float: right;font-size: 20px'>
+		<div class="bangbaocao" style='width: 70%; float: right;font-size: 16px'>
 			<h1 style='color:red;'>Thông tin điểm nhập vào máy game.</h1>
 			<table>		
 		<tr> 
 				<th>Máy game</th>
-				<th>Ngày</th>
+				<th>Ngày</th>				
 				<th>Ca</th>					
 				<th>Xuất</th>
 				<th>Start seri</th>
@@ -167,8 +167,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 				}
 			echo "<tr>";
 				echo "<th>" .$row["name"]   . "</th>" ;
-				echo "<th>" .  $row["Ngaynhap"]   . "</th>" ;
-				echo "<th>" .  $row["Ca"]   . "</th>" ;		
+				echo "<th>" .  $row["Ngaynhap"]   ." ".  $row["thoigian"]. "</th>" ;
+				echo "<th>" .  $row["Ca"]   . "</th>" ;							
 				echo "<th>" .  $row["Xuat"]   . "</th>" ;
 				echo "<th>" .  $row["Startseri"]   . "</th>" ;
 				echo "<th>" .  $row["Endseri"]   . "</th>" ;		
@@ -224,7 +224,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			mysqli_set_charset($conn,"utf8");
 			$homnay=$_POST["date_baocao"];
 			$homnay1=$_POST["date_baocao1"];
-			$sql1 = "SELECT `baocao`.`Ngaynhap`, `tenmay`.`name`, `baocao`.`nhanvien`, `baocao`.`Ca`, `baocao`.`Xuat`, `baocao`.`Startseri`, `baocao`.`Endseri` FROM `tenmay`  INNER JOIN `baocao` on `baocao`.`idmay` = `tenmay`.`id`  where Ngaynhap  between '$homnay' and '$homnay1'";
+			$sql1 = "SELECT `baocao`.`Ngaynhap`, `tenmay`.`name`, `baocao`.`nhanvien`, `baocao`.`Ca`, `baocao`.`Xuat`, `baocao`.`Startseri`, `baocao`.`Endseri`, `baocao`.`thoigian` FROM `tenmay`  INNER JOIN `baocao` on `baocao`.`idmay` = `tenmay`.`id`  where Ngaynhap  between '$homnay' and '$homnay1'";
 			$result1 = $conn->query($sql1);			
 			$sql_laytondau = "select * from tonkho where Ngayton  between '$homnay' and '$homnay1'";
 			$result_tonkho1 = $conn->query($sql_laytondau);				
@@ -267,7 +267,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 					$rowcount++;	
 					$sumxuat+=$row["Xuat"];				
 					$sheet->setCellValue('A'.$rowcount,$row["name"]);
-					$sheet->setCellValue('B'.$rowcount,$row["Ngaynhap"]);
+					$sheet->setCellValue('B'.$rowcount,$row["Ngaynhap"]." ".$row["thoigian"]);
 					$sheet->setCellValue('C'.$rowcount,$row["Ca"]);
 					$sheet->setCellValue('D'.$rowcount,$row["Xuat"]);
 					$sheet->setCellValue('E'.$rowcount,$row["Startseri"]);

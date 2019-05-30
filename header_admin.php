@@ -10,7 +10,7 @@
 $Ca;
 $_SESSION["Ca"]=NULL;
 $_SESSION['nhanvien'];
-$tennhanvien_id;
+$tennhanvien_id=1;
  $tennhanvien='admin';	
  		if(isset($_SESSION['nhanvien']))
 		{
@@ -72,7 +72,7 @@ color: White;
 <span class="menu"><a href="maygame.php" >Máy Game</a></span>
 <span class="menu"><a href="dangky.php" >Tài Khoản</a></span>
 <span class="menu"><a href="caidatmail.php" >Cài Đặt Mail</a></span>
-<span class="menu"><a href="RSDB.php" >Reset DB</a></span>
+
 </div></br>
 </br>
 <div class="ca">Ca: <?php   echo $Ca . ".     ".date("l") . " - " . date("Y-m-d") ;    ?>     Nhân viên: <?php echo $tennhanvien ?></div>	
